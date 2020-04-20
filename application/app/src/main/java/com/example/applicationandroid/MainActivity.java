@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -26,16 +27,6 @@ public class MainActivity extends AppCompatActivity {
         buttonRechercher = findViewById(R.id.buttonRechercher);
         tableau = findViewById(R.id.tableau);
 
-        RestoTrouver mcdo = new RestoTrouver("mcdo","3");
-        RestoTrouver bostonpizza = new RestoTrouver("Boston pizza","4");
-
-        RestoTrouver[] users = new RestoTrouver[]{mcdo,bostonpizza};
-
-        ArrayAdapter<RestoTrouver> arrayAdapter
-                = new ArrayAdapter<RestoTrouver>(this, android.R.layout.simple_list_item_1 , users);
-
-        tableau.setAdapter(arrayAdapter);
-
         setListener();
     }
 
@@ -44,12 +35,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClickrechercherResto(View v){
-        Toast.makeText(this, "Afficher les resto qui offrent se repas", Toast.LENGTH_SHORT).show();
+        afficherTableau();
     }
 
     private void GoToMapActivity(){
         Intent sendToMapActivity = new Intent(this, MapsActivity.class);
         startActivity(sendToMapActivity);
+    }
+
+    private void afficherTableau(){
+        RestoTrouver salvatore = new RestoTrouver("salvatore","3");
+        RestoTrouver bostonpizza = new RestoTrouver("Boston pizza","4");
+
+        RestoTrouver[] resto = new RestoTrouver[]{salvatore,bostonpizza};
+
+        ArrayAdapter<RestoTrouver> arrayAdapter
+                = new ArrayAdapter<RestoTrouver>(this, android.R.layout.simple_list_item_1 , resto);
+
+        tableau.setAdapter(arrayAdapter);
+
+        tableau.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                GoToMapActivity();
+            }
+        });
     }
 
 

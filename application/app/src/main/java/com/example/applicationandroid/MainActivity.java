@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +34,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListener(){
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.Item_menu){
+            GoToMainActivity();
+            return true;
+        }
+        return false;
+    }
+
+    private void GoToMainActivity(){
+        Intent sendToMainActivity = new Intent(this, MainActivity.class);
+        startActivity(sendToMainActivity);
     }
 
     public void OnClickrechercherResto(View v){

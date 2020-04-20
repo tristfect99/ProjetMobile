@@ -4,4 +4,5 @@
     <string name="editTextRecherche">Repas</string>
     <string name="buttonRechercher">Rechercher</string>
     <string name="textViewTitre">Recherche de restaurant</string>
+    <string name="Item_menu">Recherche</string>
 </resources>

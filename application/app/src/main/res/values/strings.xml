@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ApplicationAndroid</string>
     <string name="title_activity_maps">Map</string>
+    <string name="editTextRecherche">Repas</string>
+    <string name="buttonRechercher">Rechercher</string>
+    <string name="textViewTitre">Recherche de restaurant</string>
 </resources>

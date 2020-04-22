@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,10 +16,19 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     EditText editTextRecherche;
     Button buttonRechercher;
     ListView tableau;
+    private static final String TAG = "MainActivity" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void afficherTableau(){
-        RestoTrouver salvatore = new RestoTrouver("salvatore","3");
+        /*RestoTrouver salvatore = new RestoTrouver("salvatore","3");
         RestoTrouver bostonpizza = new RestoTrouver("Boston pizza","4");
 
         RestoTrouver[] resto = new RestoTrouver[]{salvatore,bostonpizza};
@@ -84,7 +94,29 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 GoToMapActivity();
             }
-        });
+        });*/
+
+        String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&inputtype=textquery&input=pizza&type=restaurant";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        //Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
+
+                        Log.d(TAG, response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+        SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
 

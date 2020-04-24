@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&inputtype=textquery&input=pizza&type=restaurant";
+        String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&inputtype=textquery&input="+editTextRecherche+"&type=restaurant";
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
 
                         Log.d(TAG, response.toString());
+
                     }
                 }, new Response.ErrorListener() {
 

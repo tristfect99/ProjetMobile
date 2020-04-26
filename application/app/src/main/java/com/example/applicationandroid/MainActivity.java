@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         });*/
 
         String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&inputtype=textquery&input="+editTextRecherche+"&type=restaurant";
-
+        //String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=pizza&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 

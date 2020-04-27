@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private HashMap<String, String> mItems;
 
-    //public List<RestoTrouver> lesResto = new ArrayList<RestoTrouver>();
-
     private static final String TAG = "MainActivity" ;
 
     @Override
@@ -132,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         String value = editTextRecherche.getText().toString();
         int distance = kmSeekBar.getProgress();
         int radius = distance * 1000;
+        final List<RestoTrouver> lesResto = new ArrayList<RestoTrouver>();
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -152,23 +151,16 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject loc = geo.getJSONObject("location");
                                 String latitude = loc.getString("lat");
                                 String longitude = loc.getString("lng");
-                                Log.d(TAG, nom);
-                                Log.d(TAG, address);
-                                Log.d(TAG, rating);
-                                Log.d(TAG, latitude);
-                                Log.d(TAG, longitude);
-                                Log.d(TAG, "-------------------------------------------------------------------");
-
+                                RestoTrouver currentResto = new RestoTrouver(nom, address, rating, latitude, longitude);
+                                lesResto.add(currentResto);
                                 mItems.put(nom, address);
 
-                                //lesResto.add();
-
                             }
+                            MyAdapter mAdapter = new MyAdapter(mItems);
+                            recyclerView.setAdapter(mAdapter);
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
-                        MyAdapter mAdapter = new MyAdapter(mItems);
-                        recyclerView.setAdapter(mAdapter);
                     }
                 }, new Response.ErrorListener() {
 

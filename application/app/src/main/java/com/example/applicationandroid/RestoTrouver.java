@@ -8,12 +8,12 @@ public class RestoTrouver implements Serializable {
     private String nom;
     private String adresse;
     private String note;
-    private int latitude;
-    private int longitude;
+    private String latitude;
+    private String longitude;
 
     private boolean active;
 
-    public RestoTrouver(String nom, String adresse, String note, int latitude, int longitude)  {
+    public RestoTrouver(String nom, String adresse, String note, String latitude, String longitude)  {
         this.nom= nom;
         this.adresse = adresse;
         this.note = note;
@@ -22,7 +22,7 @@ public class RestoTrouver implements Serializable {
         this.active= true;
     }
 
-    public RestoTrouver(String nom, String adresse, String note,int latitude, int longitude, boolean active)  {
+    public RestoTrouver(String nom, String adresse, String note,String latitude, String longitude, boolean active)  {
         this.nom= nom;
         this.adresse = adresse;
         this.note = note;
@@ -55,19 +55,19 @@ public class RestoTrouver implements Serializable {
         this.adresse = adresse;
     }
 
-    public int getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(int latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public int getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 

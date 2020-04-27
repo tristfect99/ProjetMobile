@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
@@ -41,9 +43,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         String nom = (String) mItems.keySet().toArray()[position];
-        String adresse = (String) mItems.keySet().toArray()[position];
         holder.textViewResto.setText(nom);
-        holder.textViewAdresse.setText(adresse);
+
+        /*Iterator myVeryOwnIterator = mItems.keySet().iterator();
+        String nom = (String)myVeryOwnIterator.next();
+        String adresse = (String)mItems.get(nom);
+        holder.textViewResto.setText(nom);
+        holder.textViewAdresse.setText(adresse);*/
     }
 
     @Override

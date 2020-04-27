@@ -1,6 +1,8 @@
 package com.example.applicationandroid;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RestoTrouver implements Serializable {
     private String nom;

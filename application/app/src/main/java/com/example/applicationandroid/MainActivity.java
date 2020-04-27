@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private HashMap<String, String> mItems;
+
+    //public List<RestoTrouver> lesResto = new ArrayList<RestoTrouver>();
 
     private static final String TAG = "MainActivity" ;
 
@@ -157,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, "-------------------------------------------------------------------");
 
                                 mItems.put(nom, address);
+
+                                //lesResto.add();
 
                             }
                         }catch (JSONException e){

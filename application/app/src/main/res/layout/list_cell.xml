@@ -16,6 +16,16 @@
         tools:text="Resto"></TextView>
 
     <TextView
+        android:id="@+id/TextViewNote"
+        android:layout_width="375dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:layout_marginBottom="15dp"
+        android:text="Note"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        tools:text="Note"></TextView>
+
+    <TextView
         android:id="@+id/TextViewAdresse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

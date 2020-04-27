@@ -1,10 +1,13 @@
 package com.example.applicationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
 
@@ -27,7 +31,11 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
     EditText editTextRecherche;
     Button buttonRechercher;
-    ListView tableau;
+    //ListView tableau;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     private static final String TAG = "MainActivity" ;
 
     @Override
@@ -37,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         editTextRecherche = findViewById(R.id.editTextRecherche);
         buttonRechercher = findViewById(R.id.buttonRechercher);
-        tableau = findViewById(R.id.tableau);
+        //tableau = findViewById(R.id.tableau);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
+        recyclerView.setHasFixedSize(true);
 
         setListener();
     }
@@ -119,6 +129,5 @@ public class MainActivity extends AppCompatActivity {
 
         SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
-
 
 }

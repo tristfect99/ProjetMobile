@@ -16,15 +16,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     private final List<Pair<String, String>> characters = Arrays.asList(
             Pair.create("Boston pizza", "st-georges"),
-            Pair.create("Pantalaimon", "Lyra's daemon, nicknamed Pan."),
-            Pair.create("Roger Parslow", "Lyra's friends"),
-            Pair.create("Lord Asriel", "Lyra's uncle"),
-            Pair.create("Marisa Coulter", "Intelligent and beautiful, but extremely ruthless and callous."),
-            Pair.create("Iorek Byrnison", "Armoured bear, Rightful king of the panserbjørne. Reduced to a slave of the human village Trollesund."),
-            Pair.create("Serafina Pekkala", "Witch who closely follows Lyra on her travels."),
-            Pair.create("Lee Scoresby", "Texan aeronaut who transports Lyra in his balloon. Good friend with Iorek Byrnison."),
-            Pair.create("Ma Costa", "Gyptian woman whose son, Billy Costa is abducted by the \"Gobblers\"."),
-            Pair.create("John Faa", "The King of all gyptian people.")
+            Pair.create("st-hubert", "st-georges"),
+            Pair.create("mcdo", "st-georges")
     );
 
     @Override

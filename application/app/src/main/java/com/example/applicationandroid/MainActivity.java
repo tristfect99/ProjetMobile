@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MyAdapter());
 
         setListener();
     }
@@ -152,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, latitude);
                                 Log.d(TAG, longitude);
                                 Log.d(TAG, "-------------------------------------------------------------------");
+
+                                //recyclerView.setAdapter(new MyAdapter());
+
                             }
                         }catch (JSONException e){
                             e.printStackTrace();

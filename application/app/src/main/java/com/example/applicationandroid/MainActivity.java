@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private HashMap<String, String> mItems;
 
     private static final String TAG = "MainActivity" ;
 
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mItems = new HashMap<>();
 
         setListener();
     }
@@ -152,12 +156,14 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, longitude);
                                 Log.d(TAG, "-------------------------------------------------------------------");
 
-                                //recyclerView.setAdapter(new MyAdapter());
+                                mItems.put(nom, address);
 
                             }
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
+                        MyAdapter mAdapter = new MyAdapter(mItems);
+                        recyclerView.setAdapter(mAdapter);
                     }
                 }, new Response.ErrorListener() {
 

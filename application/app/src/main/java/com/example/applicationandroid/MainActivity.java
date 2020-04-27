@@ -2,6 +2,7 @@ package com.example.applicationandroid;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +24,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void OnClickrechercherResto(View v){
+        hideKeyboard(this);
         afficherTableau();
     }
 
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void afficherTableau(){
+        String value = editTextRecherche.getText().toString();
         /*RestoTrouver salvatore = new RestoTrouver("salvatore","3");
         RestoTrouver bostonpizza = new RestoTrouver("Boston pizza","4");
 
@@ -95,18 +101,44 @@ public class MainActivity extends AppCompatActivity {
                 GoToMapActivity();
             }
         });*/
-
-        String url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&inputtype=textquery&input="+editTextRecherche+"&type=restaurant";
-        //String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query=pizza&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0";
+        String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        //Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show();
-
-                        Log.d(TAG, response.toString());
-
+                        try{
+                            Log.d(TAG, response.toString());
+                            JSONArray array = response.getJSONArray("results");
+                            for (int i=0;i<array.length();i++){
+                                JSONObject place = array.getJSONObject(i);
+                                String status = place.getString("business_status");
+                                String nom = place.getString("name");
+                                String address = place.getString("formatted_address");
+                                String rating = place.getString("rating");
+                                rating += "/5";
+                                JSONObject geo = place.getJSONObject("geometry");
+                                JSONObject loc = geo.getJSONObject("location");
+                                String latitude = loc.getString("lat");
+                                String longitude = loc.getString("lng");
+                                Log.d(TAG, nom);
+                                Log.d(TAG, address);
+                                Log.d(TAG, rating);
+                                Log.d(TAG, latitude);
+                                Log.d(TAG, longitude);
+                                Log.d(TAG, "-------------------------------------------------------------------");
+                                //images
+                                //JSONArray photos = place.getJSONArray("photos");
+                                //for (int y=0;y<photos.length();y++) {
+                                //    JSONObject photo = photos.getJSONObject(y);
+                                //    String ref = photo.getString("photo_reference");
+                                //    getImage(ref);
+                                //}
+                                //images
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -120,5 +152,34 @@ public class MainActivity extends AppCompatActivity {
         SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
+    private void getImage(String photoReference){
+        String url = "https://maps.googleapis.com/maps/api/place/photo?key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&photoreference=" + photoReference + "&maxwidth=400&maxheight=400";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+        SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

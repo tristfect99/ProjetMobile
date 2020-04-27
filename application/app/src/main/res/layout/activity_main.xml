@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="410dp"
+        android:layout_width="fill_parent"
         android:layout_height="185dp"
         android:layout_marginTop="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,12 +47,46 @@
             android:id="@+id/textViewTitre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
+            android:layout_marginBottom="90dp"
             android:text="@string/textViewTitre"
             android:textColor="#0F0E0F"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/editTextRecherche"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <SeekBar
+            android:id="@+id/distanceSeekBar"
+            style="@style/Widget.AppCompat.SeekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="35dp"
+            android:max="50"
+            android:progressTint="#0E3CBC"
+            app:layout_constraintBottom_toTopOf="@+id/editTextRecherche"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/Distance" />
+
+        <TextView
+            android:id="@+id/Distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="35dp"
+            android:text="Distance (km)"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/editTextRecherche"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/kmValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@+id/distanceSeekBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.696"
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

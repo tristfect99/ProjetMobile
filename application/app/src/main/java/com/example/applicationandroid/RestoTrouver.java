@@ -3,37 +3,70 @@ package com.example.applicationandroid;
 import java.io.Serializable;
 
 public class RestoTrouver implements Serializable {
-    private String nomResto;
+    private String nom;
+    private String adresse;
     private String note;
+    private int latitude;
+    private int longitude;
 
     private boolean active;
 
-    public RestoTrouver(String nomResto, String note)  {
-        this.nomResto= nomResto;
+    public RestoTrouver(String nom, String adresse, String note, int latitude, int longitude)  {
+        this.nom= nom;
+        this.adresse = adresse;
         this.note = note;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.active= true;
     }
 
-    public RestoTrouver(String nomResto, String note, boolean active)  {
-        this.nomResto= nomResto;
+    public RestoTrouver(String nom, String adresse, String note,int latitude, int longitude, boolean active)  {
+        this.nom= nom;
+        this.adresse = adresse;
         this.note = note;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.active= active;
     }
 
-    public String getUserType() {
+    public String getNote() {
         return note;
     }
 
-    public void setUserType(String note) {
+    public void setNote(String note) {
         this.note = note;
     }
 
-    public String getUserName() {
-        return nomResto;
+    public String getNom() {
+        return nom;
     }
 
-    public void setUserName(String nomResto) {
-        this.nomResto = nomResto;
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public int getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(int latitude) {
+        this.latitude = latitude;
+    }
+
+    public int getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(int longitude) {
+        this.longitude = longitude;
     }
 
     public boolean isActive() {
@@ -46,6 +79,6 @@ public class RestoTrouver implements Serializable {
 
     @Override
     public String toString() {
-        return this.nomResto +" note: "+ this.note+"/5";
+        return this.nom +" note: "+ this.note+"/5";
     }
 }

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
@@ -31,10 +32,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
     EditText editTextRecherche;
     Button buttonRechercher;
+    SeekBar kmSeekBar;
+    TextView kmValue;
     //ListView tableau;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         editTextRecherche = findViewById(R.id.editTextRecherche);
         buttonRechercher = findViewById(R.id.buttonRechercher);
+        kmSeekBar = findViewById(R.id.distanceSeekBar);
+        kmValue = findViewById(R.id.kmValue);
         //tableau = findViewById(R.id.tableau);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
@@ -57,7 +63,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListener(){
+        kmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+                kmValue.setText("" + progress);
+                kmValue.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+            }
 
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
@@ -94,24 +117,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void afficherTableau(){
         String value = editTextRecherche.getText().toString();
-        /*RestoTrouver salvatore = new RestoTrouver("salvatore","3");
-        RestoTrouver bostonpizza = new RestoTrouver("Boston pizza","4");
-
-        RestoTrouver[] resto = new RestoTrouver[]{salvatore,bostonpizza};
-
-        ArrayAdapter<RestoTrouver> arrayAdapter
-                = new ArrayAdapter<RestoTrouver>(this, android.R.layout.simple_list_item_1 , resto);
-
-        tableau.setAdapter(arrayAdapter);
-
-        tableau.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                GoToMapActivity();
-            }
-        });*/
-        String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant";
+        int distance = kmSeekBar.getProgress();
+        int radius = distance * 1000;
+        String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -137,14 +145,6 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d(TAG, latitude);
                                 Log.d(TAG, longitude);
                                 Log.d(TAG, "-------------------------------------------------------------------");
-                                //images
-                                //JSONArray photos = place.getJSONArray("photos");
-                                //for (int y=0;y<photos.length();y++) {
-                                //    JSONObject photo = photos.getJSONObject(y);
-                                //    String ref = photo.getString("photo_reference");
-                                //    getImage(ref);
-                                //}
-                                //images
                             }
                         }catch (JSONException e){
                             e.printStackTrace();

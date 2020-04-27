@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
 
         SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
 
-<<<<<<< HEAD
     }
 
     public static void hideKeyboard(Activity activity) {
@@ -193,6 +192,4 @@ public class MainActivity extends AppCompatActivity {
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
-=======
->>>>>>> 1ac773b2de90a6fb91760068b0e70e5be37dab50
 }

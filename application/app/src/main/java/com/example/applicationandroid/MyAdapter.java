@@ -17,20 +17,22 @@ import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
 
-    private HashMap<String, String> mItems;
+    private List<RestoTrouver> restoTrouverDataSet;
 
-    MyAdapter(HashMap<String, String> items) {
-        mItems = items;
+    MyAdapter(List<RestoTrouver>restoTrouverDataSet){
+        this.restoTrouverDataSet = restoTrouverDataSet;
     }
 
     public static class Holder extends RecyclerView.ViewHolder {
         public TextView textViewResto;
         public TextView textViewAdresse;
+        public TextView textViewNote;
 
         public Holder(View itemView) {
             super(itemView);
             textViewResto = (TextView) itemView.findViewById(R.id.TextViewNom);
             textViewAdresse = (TextView) itemView.findViewById(R.id.TextViewAdresse);
+            textViewNote = (TextView) itemView.findViewById(R.id.TextViewNote);
         }
     }
 
@@ -42,18 +44,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        String nom = (String) mItems.keySet().toArray()[position];
-        holder.textViewResto.setText(nom);
-
-        /*Iterator myVeryOwnIterator = mItems.keySet().iterator();
-        String nom = (String)myVeryOwnIterator.next();
-        String adresse = (String)mItems.get(nom);
-        holder.textViewResto.setText(nom);
-        holder.textViewAdresse.setText(adresse);*/
+        RestoTrouver restoTrouver = restoTrouverDataSet.get(position);
+        holder.textViewResto.setText(restoTrouver.getNom());
+        holder.textViewAdresse.setText(restoTrouver.getAdresse());
+        String note = "Note: " + restoTrouver.getNote();
+        holder.textViewNote.setText(note);
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return restoTrouverDataSet.size();
     }
 }

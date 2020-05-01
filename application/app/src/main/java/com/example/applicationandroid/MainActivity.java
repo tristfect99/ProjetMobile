@@ -46,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
     Button buttonRechercher;
     SeekBar kmSeekBar;
     TextView kmValue;
-    //ListView tableau;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private HashMap<String, String> mItems;
 
     private static final String TAG = "MainActivity" ;
 
@@ -67,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mItems = new HashMap<>();
 
         setListener();
     }
@@ -151,12 +147,12 @@ public class MainActivity extends AppCompatActivity {
                                 JSONObject loc = geo.getJSONObject("location");
                                 String latitude = loc.getString("lat");
                                 String longitude = loc.getString("lng");
+
                                 RestoTrouver currentResto = new RestoTrouver(nom, address, rating, latitude, longitude);
                                 lesResto.add(currentResto);
-                                mItems.put(nom, address);
 
                             }
-                            MyAdapter mAdapter = new MyAdapter(mItems);
+                            MyAdapter mAdapter = new MyAdapter(lesResto);
                             recyclerView.setAdapter(mAdapter);
                         }catch (JSONException e){
                             e.printStackTrace();

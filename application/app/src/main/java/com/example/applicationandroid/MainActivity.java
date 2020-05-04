@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if(item.getItemId() == R.id.Item_menu){
             GoToMainActivity();
+            //GoToMapActivity();
             return true;
         }
         return false;

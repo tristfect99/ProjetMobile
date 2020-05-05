@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyAdapter.OnRestoListener {
     EditText editTextRecherche;
     Button buttonRechercher;
     SeekBar kmSeekBar;
@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if(item.getItemId() == R.id.Item_menu){
             GoToMainActivity();
-            //GoToMapActivity();
             return true;
         }
         return false;
@@ -118,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
         afficherTableau();
     }
 
-    private void GoToMapActivity(){
+    private void GoToMapActivity(int position){
         Intent sendToMapActivity = new Intent(this, MapsActivity.class);
+        //sendToMapActivity.putExtra("listPosition", position);
         startActivity(sendToMapActivity);
     }
 
@@ -128,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
         int distance = kmSeekBar.getProgress();
         int radius = distance * 1000;
         final List<RestoTrouver> lesResto = new ArrayList<RestoTrouver>();
+        final MyAdapter.OnRestoListener onRestoListener = new MyAdapter.OnRestoListener() {
+            @Override
+            public void onRestoClick(int position) {
+                GoToMapActivity(position);
+            }
+        };
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                                 lesResto.add(currentResto);
 
                             }
-                            MyAdapter mAdapter = new MyAdapter(lesResto);
+                            MyAdapter mAdapter = new MyAdapter(lesResto, onRestoListener);
                             recyclerView.setAdapter(mAdapter);
                         }catch (JSONException e){
                             e.printStackTrace();
@@ -200,5 +206,10 @@ public class MainActivity extends AppCompatActivity {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @Override
+    public void onRestoClick(int position) {
+        //GoToMapActivity();
     }
 }

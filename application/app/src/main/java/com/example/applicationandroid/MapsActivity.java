@@ -6,11 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,26 +18,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private GoogleApiClient googleApiClient;
 
     private double currentLat;
     private double currentLng;
-
-    /*MapsActivity(GoogleMap mMap, GoogleApiClient googleApiClient, double currentLat, double currentLng){
-        this.mMap = mMap;
-        this.googleApiClient = googleApiClient;
-        this.currentLat = currentLat;
-        this.currentLng = currentLng;
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +32,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
-
-    private void getCurrentLocation() {
-        mMap.clear();
-        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-        if (location != null) {
-            currentLat = location.getLongitude();
-            currentLng = location.getLatitude();
-        }
-        Toast.makeText(this, "lat: "+ currentLat + "lng: "+ currentLng, Toast.LENGTH_LONG).show();
     }
 
     @Override

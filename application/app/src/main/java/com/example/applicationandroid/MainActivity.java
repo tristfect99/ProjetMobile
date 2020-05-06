@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
     Button buttonRechercher;
     SeekBar kmSeekBar;
     TextView kmValue;
+    TextView textViewTitre;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -61,10 +64,12 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         buttonRechercher = findViewById(R.id.buttonRechercher);
         kmSeekBar = findViewById(R.id.distanceSeekBar);
         kmValue = findViewById(R.id.kmValue);
-        //tableau = findViewById(R.id.tableau);
+        textViewTitre = findViewById(R.id.textViewTitre);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        startAnimation();
 
         setListener();
     }
@@ -217,5 +222,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
     @Override
     public void onRestoClick(int position) {
         //GoToMapActivity();
+    }
+
+    private void startAnimation(){
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim);
+        textViewTitre.startAnimation(animation);
     }
 }

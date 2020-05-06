@@ -3,6 +3,7 @@ package com.example.applicationandroid;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,17 +30,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     private GoogleApiClient googleApiClient;
 
-    //private List<RestoTrouver> restoTrouverDataSet;
+    private double currentLat;
+    private double currentLng;
 
-    private double longitudeFrom;
-    private double latitudeFrom;
-
-    /*MapsActivity(GoogleMap mMap, GoogleApiClient googleApiClient, List<RestoTrouver> restoTrouverDataSet, double longitudeFrom, double latitudeFrom){
+    /*MapsActivity(GoogleMap mMap, GoogleApiClient googleApiClient, double currentLat, double currentLng){
         this.mMap = mMap;
         this.googleApiClient = googleApiClient;
-        this.restoTrouverDataSet = restoTrouverDataSet;
-        this.longitudeFrom = longitudeFrom;
-        this.latitudeFrom = latitudeFrom;
+        this.currentLat = currentLat;
+        this.currentLng = currentLng;
     }*/
 
     @Override
@@ -55,25 +53,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear();
         Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         if (location != null) {
-            longitudeFrom = location.getLongitude();
-            latitudeFrom = location.getLatitude();
+            currentLat = location.getLongitude();
+            currentLng = location.getLatitude();
         }
-    }
-
-    public String makeURL (double sourcelat, double sourcelog, double destlat, double destlog ){
-        StringBuilder urlString = new StringBuilder();
-        urlString.append("https://maps.googleapis.com/maps/api/directions/json");
-        urlString.append("?origin=");// from
-        urlString.append(Double.toString(sourcelat));
-        urlString.append(",");
-        urlString.append(Double.toString( sourcelog));
-        urlString.append("&destination=");// to
-        urlString.append(Double.toString( destlat));
-        urlString.append(",");
-        urlString.append(Double.toString(destlog));
-        urlString.append("&sensor=false&mode=driving&alternatives=true");
-        urlString.append("&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0");
-        return urlString.toString();
+        Toast.makeText(this, "lat: "+ currentLat + "lng: "+ currentLng, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -89,5 +72,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng restoLocation = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(restoLocation).title(leResto));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(restoLocation, zoomLevel));
+    }
+
+    public void OnClickRetour(View v){
+        Intent sendToMainActivity = new Intent(this, MainActivity.class);
+        startActivity(sendToMainActivity);
+    }
+
+    public void OnClickCoter(View v){
+        Toast.makeText(this, "Coter le resto", Toast.LENGTH_SHORT).show();
     }
 }

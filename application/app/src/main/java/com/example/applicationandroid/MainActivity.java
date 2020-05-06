@@ -117,9 +117,11 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         afficherTableau();
     }
 
-    private void GoToMapActivity(int position){
+    private void GoToMapActivity(String resto, double lat, double lng){
         Intent sendToMapActivity = new Intent(this, MapsActivity.class);
-        //sendToMapActivity.putExtra("listPosition", position);
+        sendToMapActivity.putExtra("nomResto", resto);
+        sendToMapActivity.putExtra("latitude", lat);
+        sendToMapActivity.putExtra("longitude", lng);
         startActivity(sendToMapActivity);
     }
 
@@ -131,7 +133,12 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         final MyAdapter.OnRestoListener onRestoListener = new MyAdapter.OnRestoListener() {
             @Override
             public void onRestoClick(int position) {
-                GoToMapActivity(position);
+                String resto = lesResto.get(position).getNom();
+                String latitudeS = lesResto.get(position).getLatitude();
+                String longitudeS = lesResto.get(position).getLongitude();
+                double lat = Double.parseDouble(latitudeS);
+                double lng = Double.parseDouble(longitudeS);
+                GoToMapActivity(resto, lat, lng);
             }
         };
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
@@ -173,7 +180,6 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
 
                     }
                 });
-
         SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 

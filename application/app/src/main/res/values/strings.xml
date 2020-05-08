@@ -5,4 +5,7 @@
     <string name="buttonRechercher">Rechercher</string>
     <string name="textViewTitre">Recherche de restaurant</string>
     <string name="Item_menu">Recherche</string>
+    <string name="note_sur_5">Note sur 5</string>
+    <string name="donner_une_note_ce_restaurant">Donner une note à ce restaurant</string>
+    <string name="envoyer">Envoyer</string>
 </resources>

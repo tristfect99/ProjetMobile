@@ -1,9 +1,12 @@
 package com.example.applicationandroid;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
@@ -17,6 +20,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Date;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -55,6 +60,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void OnClickCoter(View v){
-        Toast.makeText(this, "Coter le resto", Toast.LENGTH_SHORT).show();
+        createAndShowDialog();
+    }
+
+    private void createAndShowDialog(){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.cote_dialog);
+
+        Button dialogBtnAddNote = dialog.findViewById(R.id.button_note);
+
+        dialogBtnAddNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editTextNote = dialog.findViewById(R.id.editText_note);
+                RestoTrouver NoteToAdd = new RestoTrouver("","","","","");
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

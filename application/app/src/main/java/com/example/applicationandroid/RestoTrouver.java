@@ -10,10 +10,11 @@ public class RestoTrouver implements Serializable {
     private String note;
     private String latitude;
     private String longitude;
+    private String googleID;
 
     private boolean active;
 
-    public RestoTrouver(String nom, String adresse, String note, String latitude, String longitude)  {
+    /*public RestoTrouver(String nom, String adresse, String note, String latitude, String longitude)  {
         this.nom= nom;
         this.adresse = adresse;
         this.note = note;
@@ -29,6 +30,16 @@ public class RestoTrouver implements Serializable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.active= active;
+    }*/
+
+    public RestoTrouver(String nom, String adresse, String note, String latitude, String longitude, String googleID) {
+        this.nom = nom;
+        this.adresse = adresse;
+        this.note = note;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.googleID = googleID;
+        this.active= true;
     }
 
     public String getNote() {
@@ -82,5 +93,13 @@ public class RestoTrouver implements Serializable {
     @Override
     public String toString() {
         return this.nom +" note: "+ this.note+"/5";
+    }
+
+    public String getGoogleID() {
+        return googleID;
+    }
+
+    public void setGoogleID(String googleID) {
+        this.googleID = googleID;
     }
 }

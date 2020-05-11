@@ -1,5 +1,6 @@
 package com.example.applicationandroid;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    private FirebaseFirestore database;
 
     private static final String TAG = "MainActivity" ;
 
@@ -124,11 +130,12 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         afficherTableau();
     }
 
-    private void GoToMapActivity(String resto, double lat, double lng){
+    private void GoToMapActivity(String resto, double lat, double lng, String googleID){
         Intent sendToMapActivity = new Intent(this, MapsActivity.class);
         sendToMapActivity.putExtra("nomResto", resto);
         sendToMapActivity.putExtra("latitude", lat);
         sendToMapActivity.putExtra("longitude", lng);
+        sendToMapActivity.putExtra("googleID", googleID);
         startActivity(sendToMapActivity);
     }
 
@@ -143,9 +150,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                 String resto = lesResto.get(position).getNom();
                 String latitudeS = lesResto.get(position).getLatitude();
                 String longitudeS = lesResto.get(position).getLongitude();
+                String googleID = lesResto.get(position).getGoogleID();
                 double lat = Double.parseDouble(latitudeS);
                 double lng = Double.parseDouble(longitudeS);
-                GoToMapActivity(resto, lat, lng);
+                GoToMapActivity(resto, lat, lng, googleID);
             }
         };
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
@@ -161,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                                 JSONObject place = array.getJSONObject(i);
                                 String status = place.getString("business_status");
                                 String nom = place.getString("name");
+                                String googleID = place.getString("id");
                                 String address = place.getString("formatted_address");
                                 String rating = place.getString("rating");
                                 rating += "/5";
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                                 String latitude = loc.getString("lat");
                                 String longitude = loc.getString("lng");
 
-                                RestoTrouver currentResto = new RestoTrouver(nom, address, rating, latitude, longitude);
+                                RestoTrouver currentResto = new RestoTrouver(nom, address, rating, latitude, longitude, googleID);
                                 lesResto.add(currentResto);
 
                             }

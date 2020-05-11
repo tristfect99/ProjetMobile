@@ -4,11 +4,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.CpuUsageInfo;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -20,20 +24,26 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
     private GoogleMap mMap;
 
-    private double currentLat;
-    private double currentLng;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        database = FirebaseFirestore.getInstance();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -65,15 +75,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void createAndShowDialog(){
         final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.cote_dialog);
+        dialog.setContentView(R.layout.cote_card);
 
-        Button dialogBtnAddNote = dialog.findViewById(R.id.button_note);
+        Button buttonSave = dialog.findViewById(R.id.button_Save);
 
-        dialogBtnAddNote.setOnClickListener(new View.OnClickListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText editTextNote = dialog.findViewById(R.id.editText_note);
-                RestoTrouver NoteToAdd = new RestoTrouver("","","","","");
+                RatingBar ratingBar = dialog.findViewById(R.id.ratingBar_Cote);
+                Float cote = ratingBar.getRating();
+                Intent intent = getIntent();
+                String googleID = intent.getStringExtra("googleID");
+                CoteRestaurant coteRestaurant = new CoteRestaurant(googleID, cote);
+                database.collection("cotes").add(coteRestaurant).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                    }
+                });
                 dialog.dismiss();
             }
         });

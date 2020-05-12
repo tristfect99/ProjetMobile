@@ -175,6 +175,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                 GoToMapActivity(resto, lat, lng, googleID);
             }
         };
+        final MyAdapter mAdapter = new MyAdapter(lesResto, onRestoListener);
+        recyclerView.setAdapter(mAdapter);
         String url = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ value +"&key=AIzaSyB7XY8fiHuldU-vSJybZHlDS9sNjDEG7D0&type=restaurant&radius="+radius;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -211,13 +213,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                                         finalRating += "/5";
                                         RestoTrouver currentResto = new RestoTrouver(nom, address, finalRating, latitude, longitude, googleID);
                                         lesResto.add(currentResto);
+                                        mAdapter.notifyItemInserted(lesResto.size() - 1);
                                     }
                                 });
-
-
                             }
-                            MyAdapter mAdapter = new MyAdapter(lesResto, onRestoListener);
-                            recyclerView.setAdapter(mAdapter);
                         }catch (JSONException e){
                             e.printStackTrace();
                         }

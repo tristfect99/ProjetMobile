@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -20,6 +21,7 @@ import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -85,14 +87,19 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+<<<<<<< HEAD
         database = FirebaseFirestore.getInstance();
 
         startAnimation();
 
+=======
+>>>>>>> 37926bb64ad7b36a3409976788984ab3fd974dce
         setListener();
     }
 
     private void setListener(){
+        startAnimation();
+        animateProgression(20);
         kmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -308,5 +315,13 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
     private void startAnimation(){
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.anim);
         textViewTitre.startAnimation(animation);
+    }
+
+    private void animateProgression(int progress) {
+        final ObjectAnimator animation = ObjectAnimator.ofInt(kmSeekBar, "progress", 0, progress);
+        animation.setDuration(3000);
+        animation.setInterpolator(new DecelerateInterpolator());
+        animation.start();
+        kmSeekBar.clearAnimation();
     }
 }

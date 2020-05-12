@@ -94,14 +94,12 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                 .build();
         database.setFirestoreSettings(settings);
 
-        startAnimation();
-
         setListener();
     }
 
     private void setListener(){
         startAnimation();
-        animateProgression(20);
+        animateProgression(25);
         kmSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {

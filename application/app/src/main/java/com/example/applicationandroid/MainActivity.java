@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -34,9 +35,16 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewResto);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        database = FirebaseFirestore.getInstance();
 
         startAnimation();
 
@@ -166,20 +176,35 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                             Log.d(TAG, response.toString());
                             JSONArray array = response.getJSONArray("results");
                             for (int i=0;i<array.length();i++){
-                                JSONObject place = array.getJSONObject(i);
+                                final JSONObject place = array.getJSONObject(i);
                                 String status = place.getString("business_status");
-                                String nom = place.getString("name");
-                                String googleID = place.getString("id");
-                                String address = place.getString("formatted_address");
-                                String rating = place.getString("rating");
-                                rating += "/5";
+                                final String nom = place.getString("name");
+                                final String googleID = place.getString("id");
+                                final String address = place.getString("formatted_address");
                                 JSONObject geo = place.getJSONObject("geometry");
                                 JSONObject loc = geo.getJSONObject("location");
-                                String latitude = loc.getString("lat");
-                                String longitude = loc.getString("lng");
+                                final String latitude = loc.getString("lat");
+                                final String longitude = loc.getString("lng");
+                                getRating(googleID).addOnCompleteListener(new OnCompleteListener<Float>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Float> task) {
+                                        String finalRating = "";
+                                        if(task.getResult() == null){
+                                            try {
+                                                finalRating = place.getString("rating");
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else {
+                                            finalRating = task.getResult().toString();
+                                        }
+                                        finalRating += "/5";
+                                        RestoTrouver currentResto = new RestoTrouver(nom, address, finalRating, latitude, longitude, googleID);
+                                        lesResto.add(currentResto);
+                                    }
+                                });
 
-                                RestoTrouver currentResto = new RestoTrouver(nom, address, rating, latitude, longitude, googleID);
-                                lesResto.add(currentResto);
 
                             }
                             MyAdapter mAdapter = new MyAdapter(lesResto, onRestoListener);
@@ -197,6 +222,51 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                     }
                 });
         SingletonRequestQueue.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private Task<Float> getRating(String googleId)
+    {
+        return database.collection("cotes").whereEqualTo("googleID", googleId).get()
+                .continueWith(new Continuation<QuerySnapshot, Float>() {
+                    @Override
+                    public Float then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() > 0) {
+                                List<CoteRestaurant> cotesDuResto = task.getResult().toObjects(CoteRestaurant.class);
+                                Float sommeCote = 0f;
+                                for (int i = 0; i < cotesDuResto.size(); i++) {
+                                    sommeCote += cotesDuResto.get(i).cote;
+                                }
+                                Float avgCote = (sommeCote / cotesDuResto.size());
+                                return avgCote;
+                            } else {
+                                return null;
+                            }
+                        }
+                        return null;
+                    }
+                });
+
+
+                /*.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(task.getResult().size() > 0){
+                                List<CoteRestaurant> cotesDuResto = task.getResult().toObjects(CoteRestaurant.class);
+                                Float sommeCote = 0f;
+                                for (int i = 0; i < cotesDuResto.size(); i++) {
+                                    sommeCote += cotesDuResto.get(i).cote;
+                                }
+                                Float avgCote = (sommeCote/cotesDuResto.size());
+                                actualRating[0] = avgCote.toString();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("test1212", document.getId() + " => " + document.getData());
+                                }
+                            }
+                        }
+                    }
+                })*/
     }
 
     private void getImage(String photoReference){

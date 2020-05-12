@@ -87,13 +87,10 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-<<<<<<< HEAD
         database = FirebaseFirestore.getInstance();
 
         startAnimation();
 
-=======
->>>>>>> 37926bb64ad7b36a3409976788984ab3fd974dce
         setListener();
     }
 
@@ -253,27 +250,6 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnResto
                         return null;
                     }
                 });
-
-
-                /*.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if(task.getResult().size() > 0){
-                                List<CoteRestaurant> cotesDuResto = task.getResult().toObjects(CoteRestaurant.class);
-                                Float sommeCote = 0f;
-                                for (int i = 0; i < cotesDuResto.size(); i++) {
-                                    sommeCote += cotesDuResto.get(i).cote;
-                                }
-                                Float avgCote = (sommeCote/cotesDuResto.size());
-                                actualRating[0] = avgCote.toString();
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d("test1212", document.getId() + " => " + document.getData());
-                                }
-                            }
-                        }
-                    }
-                })*/
     }
 
     private void getImage(String photoReference){
